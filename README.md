@@ -1,5 +1,15 @@
 # React + Vite
 
+# Final Project as a Frontend Developer
+
+An eCommerce website 
+# Wholets - Digital Seller 
+created pages --- Home, About, Contact (with validation form using Formik and Yup)
+more over products page using redux- toolkit
+Cart page, checkout, confirmation, user dashboard, order history 
+
+Not as clean but a try
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
