@@ -22,17 +22,18 @@ const Home = () => {
 
   return (
     <>
-      <CarouselHeader />
-      <About />
-      <SaleBanner />
-      <OurProducts />
-      <section className="w-full">
-        <ContactForm />
-      </section>
-      <p className="text-4xl font-bold pl-28 pt-14 pb-7 text-blue-950">
-        Featured Products
-      </p>
-      <RelatedProducts data={data} loading={loading} error={error} />
+      <div className="overflow-hidden">
+        <CarouselHeader />        <About />
+        <SaleBanner />
+        <OurProducts />
+        <section className="w-full">
+          <ContactForm />
+        </section>
+        <p className="text-4xl font-bold pl-28 pt-14 pb-7 text-blue-950">
+          Featured Products
+        </p>
+        <RelatedProducts data={data} loading={loading} error={error} />
+      </div>
     </>
   );
 };

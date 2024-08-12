@@ -1,25 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const IncrementDecrement = () => {
-  // Initialize state for the input value
-  const [value, setValue] = useState(1);
-
-  // Function to handle increment
-  const increment = () => {
-    setValue(prevValue => prevValue + 1);
-  };
-
-  // Function to handle decrement
-  const decrement = () => {
-    setValue(prevValue => (prevValue > 1 ? prevValue - 1 : 1)); 
-  };
-
+const IncrementDecrement = ({ value, onChange, onIncrement, onDecrement }) => {
   return (
     <div className="flex items-center justify-center border border-gray-400 rounded-full">
       {/* Decrement Button */}
       <button
         className="group py-[14px] px-3 w-full border-r border-gray-400 rounded-l-full h-full flex items-center justify-center bg-white shadow-sm shadow-transparent transition-all duration-300 hover:bg-gray-50 hover:shadow-gray-300"
-        onClick={decrement}
+        onClick={onDecrement}
       >
         <svg
           className="stroke-black group-hover:stroke-black"
@@ -42,15 +29,15 @@ const IncrementDecrement = () => {
       <input
         type="text"
         value={value}
-        onChange={(e) => setValue(Number(e.target.value))}
-        className="font-semibold text-gray-900 text-lg py-3 px-2 w-full min-[400px]:min-w-[75px] h-full bg-transparent placeholder:text-gray-900 text-center hover:text-indigo-600 outline-0 hover:placeholder:text-indigo-600"
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="font-semibold text-gray-900 text-lg py-3 px-2 w-full min-[400px]:min-w-[75px] h-full bg-transparent placeholder:text-gray-900 text-center hover:text-indigo-600 outline-0 hover:placeholder:text-indigo-600 border border-transparent"
         placeholder="1"
       />
 
       {/* Increment Button */}
       <button
         className="group py-[14px] px-3 w-full border-l border-gray-400 rounded-r-full h-full flex items-center justify-center bg-white shadow-sm shadow-transparent transition-all duration-300 hover:bg-gray-50 hover:shadow-gray-300"
-        onClick={increment}
+        onClick={onIncrement}
       >
         <svg
           className="stroke-black group-hover:stroke-black"

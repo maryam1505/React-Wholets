@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { fetchProductById } from "../features/products/productSlice";
@@ -8,6 +8,7 @@ import { featureData } from "../features/products/FeatureSlice";
 import Loader from "../components/Loader";
 import RefreshError from "../components/RefreshError";
 import IncrementDecrement from "../components/IncementDecrement";
+import { useNavigate } from 'react-router-dom';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -29,10 +30,30 @@ const ProductDetail = () => {
     dataDispatch(featureData());
   }, [dataDispatch]);
 
+  /* Add to cart logic starts here */
+  const [value, setValue] = useState(1);
+
+  const increment = () => setValue(prevValue => prevValue + 1);
+  const decrement = () => setValue(prevValue => (prevValue > 1 ? prevValue - 1 : 1));
+  const handleChange = (newValue) => setValue(newValue);
+  
+  const navigate = useNavigate();
+  
+
+  const addToCart = () => {
+    navigate('/shopping_cart', {
+      state: {
+       selectedProduct,
+        id,
+        quantity: value
+      }
+    });
+  };
+
+
   if (loading) return <Loader />;
 
   if (error) return <RefreshError />;
- 
 
   return (
     <>
@@ -96,8 +117,6 @@ const ProductDetail = () => {
                   <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">
                     ${selectedProduct.price}
                   </p>
-
-
 
                   <div className="flex items-center gap-2 mt-2 sm:mt-0">
                     <div className="flex items-center gap-1">
@@ -164,7 +183,10 @@ const ProductDetail = () => {
                       href="#"
                       className="text-sm font-medium leading-none text-gray-900 hover:underline dark:text-white"
                     >
-                      {selectedProduct.reviews ? selectedProduct.reviews.length : 0} Reviews
+                      {selectedProduct.reviews
+                        ? selectedProduct.reviews.length
+                        : 0}{" "}
+                      Reviews
                     </a>
                   </div>
                 </div>
@@ -174,9 +196,18 @@ const ProductDetail = () => {
                   {selectedProduct.description}
                 </p>
                 <div className="my-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-                 <IncrementDecrement />
+                  <IncrementDecrement
+                    value={value}
+                    onChange={handleChange}
+                    onIncrement={increment}
+                    onDecrement={decrement}
+                  />
                   <div className="w-full">
-                    <Link to={"/shopping_cart"} title="" role="button">
+                    <a
+                      onClick={addToCart}
+                      title=""
+                      role="button"
+                    >
                       <button className="group py-3 px-5 rounded-full bg-indigo-50 text-blue-900 font-semibold text-lg w-full flex items-center justify-center gap-2 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-indigo-300 hover:bg-indigo-100">
                         <svg
                           className="stroke-blue-900 transition-all duration-500 group-hover:stroke-blue-900"
@@ -195,7 +226,7 @@ const ProductDetail = () => {
                         </svg>
                         Add to cart
                       </button>
-                    </Link>
+                    </a>
                   </div>
                 </div>
                 <button className="text-center w-full px-5 py-3 rounded-[100px] bg-blue-950 flex items-center justify-center font-semibold text-lg text-white shadow-sm shadow-transparent transition-all duration-500 hover:bg-blue-900 hover:shadow-indigo-300">

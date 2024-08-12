@@ -8,12 +8,20 @@ const Card = ({ data, error, loading }) => {
 
   if (error) return <RefreshError />;
 
+  if (!Array.isArray(data)) {
+    return (
+      <p className="text-4xl pl-28 pt-14 pb-7 text-gray-300">
+        No Products available
+      </p>
+    );
+  }
+
   return (
     <>
       <p className="text-4xl font-bold pl-28 pt-14 pb-7 text-blue-950">
         Our Products
       </p>
-      <div className="grid md:grid-cols-4 gap-6 px-28 py-12">
+      <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 px-28 py-12">
         {data.map((value) => (
           <div
             key={value.id}
