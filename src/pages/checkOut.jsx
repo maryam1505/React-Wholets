@@ -50,8 +50,7 @@ const Checkout = () => {
 
   const handleCountryChange = (country) => {
     setMenu(false);
-    setCountry(country); 
-    
+    setCountry(country);     
   };
 
   const generateOrderId = () => {
