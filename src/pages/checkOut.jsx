@@ -6,22 +6,59 @@ import { useLocation, useNavigate } from "react-router-dom";
 const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const orderSummary = location.state || {};
+  const { state } = location;
+  
+  // Destructure state with fallback defaults
+  const { 
+    selectedProduct, 
+    shipping = "N/A", 
+    price = 0, 
+    quantity = 0, 
+    code = "No Promo Code attached", 
+    image = "", 
+    title = "", 
+    source 
+  } = state || {};
 
+  // Determine data based on the source
+  let orderSummary;
+  let imageURL;
+  if (source === 'direct') {
+    // Handle data from the product detail page
+    orderSummary = {
+      ...selectedProduct,
+    };
+    imageURL = orderSummary.images[0];
+    
+  } else if (source === 'cart') {
+    // Handle data from the shopping cart
+    orderSummary = {
+      shipping,
+      price,
+      quantity,
+      code,
+      image,
+      title
+    };
+    imageURL = orderSummary.image;
+  }
+
+  
   const countries = ["China", "Russia", "UK", "Pakistan"];
   const [menu, setMenu] = useState(false);
   const [country, setCountry] = useState("United States");
 
   const handleCountryChange = (country) => {
     setMenu(false);
-    setCountry('country', country); 
+    setCountry(country); 
+    
   };
 
   const generateOrderId = () => {
     return `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
   };
 
-  const Confirmation = () => {
+  const handleSubmit = () => {
     const orderId = generateOrderId();
     navigate('/confirmation', {
       state: {
@@ -77,7 +114,7 @@ const Checkout = () => {
               <div className="mt-6 sm:mt-0 xl:my-10 xl:px-20 w-52 sm:w-96 xl:w-auto">
                 <div className="size-96">
                   <img
-                    src={orderSummary.image}
+                    src={imageURL}
                     alt={orderSummary.title}
                     className="w-full h-full object-contain object-center"
                   />
@@ -98,9 +135,7 @@ const Checkout = () => {
                   zip: "",
                 }}
                 validationSchema={validationSchema}
-                onSubmit={(values) => {
-                  console.log(values);
-                }}
+                onSubmit={handleSubmit} 
               >
                 {({ errors, touched }) => (
                   <Form>
@@ -261,7 +296,6 @@ const Checkout = () => {
                       <button
                         type="submit"
                         className="mt-8 border border-transparent hover:border-gray-300 bg-blue-950 hover:bg-white text-white hover:text-blue-900 flex justify-center items-center py-4 rounded w-full"
-                        onClick={Confirmation}
                       >
                         <div>
                           <p className="text-base leading-4">Pay ${orderSummary.price}</p>

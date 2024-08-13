@@ -50,7 +50,14 @@ const ProductDetail = () => {
     });
   };
 
-
+ const BuyNow = () => {
+  navigate('/check_out', {
+    state: {
+     selectedProduct,
+     source: 'direct'
+    }
+  });
+ }
   if (loading) return <Loader />;
 
   if (error) return <RefreshError />;
@@ -229,7 +236,7 @@ const ProductDetail = () => {
                     </a>
                   </div>
                 </div>
-                <button className="text-center w-full px-5 py-3 rounded-[100px] bg-blue-950 flex items-center justify-center font-semibold text-lg text-white shadow-sm shadow-transparent transition-all duration-500 hover:bg-blue-900 hover:shadow-indigo-300">
+                <button onClick={BuyNow} className="text-center w-full px-5 py-3 rounded-[100px] bg-blue-950 flex items-center justify-center font-semibold text-lg text-white shadow-sm shadow-transparent transition-all duration-500 hover:bg-blue-900 hover:shadow-indigo-300">
                   Buy Now
                 </button>
               </div>
